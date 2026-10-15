@@ -21,15 +21,11 @@ import {
 } from './lib/install.mjs'
 
 const EXTRA_SKILLS = [
-  { value: 'antislop-ui', label: 'antislop-ui', hint: 'UI and visual design rules' },
+  { value: 'antislop-ui', label: 'antislop-ui', hint: 'UI and visual design rules, with performance and web best practices' },
   { value: 'antislop-copywriting', label: 'antislop-copywriting', hint: 'copywriting and text rules' },
-  { value: 'antislop-human', label: 'antislop-human', hint: 'accessibility, with the contrast checker' },
+  { value: 'antislop-human', label: 'antislop-human', hint: 'accessibility (WCAG 2.2, affordances), with the contrast checker' },
   { value: 'antislop-layoutmobile', label: 'antislop-layoutmobile', hint: 'responsive layout rules' },
   { value: 'antislop-code', label: 'antislop-code', hint: 'code comment rules' },
-  { value: 'antislop-accessibility', label: 'antislop-accessibility', hint: 'WCAG 2.2, cursor and interaction affordances (native)' },
-  { value: 'antislop-performance', label: 'antislop-performance', hint: 'performance budget and delivery (native)' },
-  { value: 'antislop-core-web-vitals', label: 'antislop-core-web-vitals', hint: 'LCP, INP, CLS (native)' },
-  { value: 'antislop-best-practices', label: 'antislop-best-practices', hint: 'security, compatibility, code quality (native)' },
 ]
 
 function stop(message) {

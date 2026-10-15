@@ -1,98 +1,8 @@
----
-name: antislop-accessibility
-description: "Accessibility skill for antislop (WCAG 2.2, strict). Load for ANY UI work, not only audits: semantic HTML, accessible names, cursor and interaction affordances, keyboard, focus, forms, ARIA, motion. Enforces R-39."
-allowed-tools: Bash(npx *) Read Write Edit Glob Grep
----
-# antislop-accessibility
+# Accessibility (WCAG 2.2)
 
-> Anti Slop: Rules for AI Coding Agents. Native web-quality skill
-
-> Part of the antislop system. Read together with `antislop.md` (the core). This skill deep-dives the accessibility concern in full WCAG 2.2 depth. `antislop-human` stays the home of contrast and the contrast checker; this skill covers everything else a person needs to perceive, operate, and understand the UI. Adapted from the MIT-licensed `accessibility` skill of [web-quality-skills](https://github.com/addyosmani/web-quality-skills) by Addy Osmani.
-
-## How to use this skill
-
-- **Native, not optional.** Load this skill together with the core for every UI or web task, not only when someone asks for an audit. Its governing core rules (R-25, R-26, R-32, R-39) are Hard Gate: a FAIL blocks delivery.
-- Build it right the first time. The guidance below is how the page is written, not a checklist bolted on at the end.
-- Every PASS in the core Delivery Gate needs evidence: a command run, a trace read, an element inspected. Never claim a score or a metric that was not measured (R-36).
-- When this skill and the visual skills disagree, function wins: an accessible, fast page with a plain look beats a beautiful page that excludes people or stalls.
+> Reference for antislop. Adapted from the MIT-licensed web-quality-skills by Addy Osmani (https://github.com/addyosmani/web-quality-skills); see LICENSE-web-quality-skills in the skill folder.
 
 Comprehensive accessibility guidelines based on WCAG 2.2 and Lighthouse accessibility audits. Goal: make content usable by everyone, including people with disabilities.
-
-## Interaction Affordances (antislop strict layer)
-
-This layer is antislop's own addition and is enforced by R-39. It covers the small signals that tell a person "this can be used", for mouse, touch, keyboard, and assistive tech at once. A UI that looks right but hides these signals is unfinished.
-
-### Clickable Without a Pointer Cursor
-
-- **Tell:** a `<button>`, a `<summary>`, a `<label>` for a checkbox, a custom `[role="button"]`, a clickable card, or a styled `<select>` that keeps the arrow cursor. Common after a CSS reset (Tailwind preflight resets `button` to `cursor: default`).
-- **Why:** the cursor is the first affordance a mouse user reads. An arrow over a control says "this is text", so people hesitate or never click. It reads as a template that was styled but never used.
-- **Fix:** every enabled interactive element gets `cursor: pointer`, set once in the base layer, not per component. Disabled controls get `cursor: not-allowed`. Text inputs keep `cursor: text`; drag handles get `grab` / `grabbing`. Never put `cursor: pointer` on something that does nothing (R-26).
-
-```css
-/* Base layer: one place, every interactive element */
-a[href], button, summary, select, label[for],
-[role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="option"], [role="switch"],
-input[type="checkbox"], input[type="radio"], input[type="file"],
-input[type="submit"], input[type="button"], input[type="reset"], input[type="range"], input[type="color"] {
-  cursor: pointer;
-}
-:disabled, [aria-disabled="true"] { cursor: not-allowed; }
-```
-
-### Div or Span Pretending to Be a Control
-
-- **Tell:** `<div onClick>`, `<span onClick>`, or `<a>` without `href` used as a button; `<a href="#" onClick>` used for an action.
-- **Why:** it is invisible to the keyboard and to screen readers: no focus, no Enter/Space, no role. A whole group of people cannot press it.
-- **Fix:** an action is a `<button type="button">`, a navigation is an `<a href>` to a real destination. Only when neither is possible: add `role`, `tabindex="0"`, Enter and Space handlers, and the state attributes (`aria-pressed`, `aria-expanded`).
-
-### Icon-Only Control With No Name
-
-- **Tell:** a close, menu, search, or social button that contains only an SVG or icon font, with no text, `aria-label`, or visually hidden label.
-- **Why:** a screen reader announces "button" and nothing else. Voice-control users cannot say its name.
-- **Fix:** give it an accessible name (`aria-label="Close dialog"` or a `.sr-only` span), mark the icon `aria-hidden="true"`, and add a visible tooltip only if it helps sighted users too. Use the same word the visible UI uses (WCAG 2.5.3).
-
-### No Hover, Active, or Disabled State
-
-- **Tell:** buttons and links that look identical at rest, on hover, while pressed, and when disabled; a disabled button that is only greyed out and still clickable.
-- **Why:** state feedback tells people their action registered. Without it a click feels lost and a disabled control looks broken.
-- **Fix:** distinct `:hover`, `:active`, `:focus-visible`, and disabled styles, each not dependent on color alone. Prefer the `disabled` attribute; if a disabled control must stay focusable for a tooltip, use `aria-disabled="true"` and block the action in code.
-
-### Hit Area Smaller Than the Target
-
-- **Tell:** a 16px icon button with no padding, inline links packed so tight that a thumb hits the neighbor, a checkbox whose label is not clickable.
-- **Why:** small targets exclude people with tremor, low precision, or a phone in one hand (WCAG 2.5.8).
-- **Fix:** at least 24x24 CSS px with spacing everywhere, and 44x44 for primary touch controls (R-03). Wrap checkboxes and radios in their `<label>` so the text is part of the target.
-
-### Motion That Ignores the User Setting
-
-- **Tell:** parallax, auto-playing carousels, scroll-jacking, or large entrance animations that still run under `prefers-reduced-motion: reduce`.
-- **Why:** motion can trigger nausea and vestibular disorders, and an auto-advancing carousel moves content away from slow readers (WCAG 2.2.2, 2.3.3).
-- **Fix:** wrap non-essential motion in `@media (prefers-reduced-motion: no-preference)`, and give anything that moves for more than 5 seconds a visible pause control.
-
-### Missing Page-Level Semantics
-
-- **Tell:** no `lang` on `<html>`, no `<main>`, headings chosen for size instead of order, a generic `<title>` on every page, no skip link on a page with a long navigation.
-- **Why:** screen-reader users navigate by landmarks, headings, and the page title; without them the page is one long undifferentiated stream, read in the wrong language voice.
-- **Fix:** `<html lang>`, one `<main>`, `<header>`/`<nav>`/`<footer>` landmarks, one `<h1>` and no skipped levels, a unique descriptive `<title>`, and a "Skip to content" link as the first focusable element.
-
-### Form Field Without a Real Label
-
-- **Tell:** placeholder used as the only label, a label not tied to its input, errors shown only as a red border, required fields marked only with a red asterisk.
-- **Why:** the placeholder disappears on typing and is low contrast; unlabeled inputs are announced as "edit text"; color-only errors are invisible to many.
-- **Fix:** a visible `<label for>` on every field, `autocomplete` tokens for personal data, `aria-invalid` plus an error message linked with `aria-describedby`, and the word "required" (or `required` attribute) next to the asterisk. Move focus to the first error on submit.
-
-### Accessibility Affordance Checklist
-
-Run with the core Delivery Gate (R-39). All answers must be **yes**:
-
-- [ ] Does every enabled interactive element show `cursor: pointer` (and disabled ones `not-allowed`), set once in the base layer?
-- [ ] Is every action a `<button>` and every navigation an `<a href>`, with no clickable `div`/`span`?
-- [ ] Does every icon-only control have an accessible name, with the icon `aria-hidden`?
-- [ ] Do controls have distinct hover, active, focus-visible, and disabled states, not color only?
-- [ ] Is every target at least 24x24 CSS px (44x44 for primary touch controls)?
-- [ ] Does all non-essential motion stop under `prefers-reduced-motion: reduce`?
-- [ ] Are `lang`, `<title>`, landmarks, heading order, and a skip link in place?
-- [ ] Does every form field have a visible label, `autocomplete` where relevant, and text errors linked to the field?
 
 ## Evidence-led audit workflow
 
@@ -276,7 +186,7 @@ element.addEventListener('keydown', (e) => {
 });
 ```
 
-**No keyboard traps.** Users must be able to Tab into and out of every component. Use the [modal focus trap pattern](references/A11Y-PATTERNS.md#modal-focus-trap) for dialogs, the native `<dialog>` element handles this automatically.
+**No keyboard traps.** Users must be able to Tab into and out of every component. Use the [modal focus trap pattern](A11Y-PATTERNS.md#modal-focus-trap) for dialogs, the native `<dialog>` element handles this automatically.
 
 ### Focus visible (2.4.7)
 
@@ -319,7 +229,7 @@ When an element receives keyboard focus, it must not be entirely hidden by other
 
 ### Skip links (2.4.1)
 
-Provide a skip link so keyboard users can bypass repetitive navigation. See the [skip link pattern](references/A11Y-PATTERNS.md#skip-link) for full markup and styles.
+Provide a skip link so keyboard users can bypass repetitive navigation. See the [skip link pattern](A11Y-PATTERNS.md#skip-link) for full markup and styles.
 
 ### Target size (2.5.8), new in 2.2
 
@@ -347,7 +257,7 @@ input[type="radio"] + label {
 
 ### Dragging movements (2.5.7), new in 2.2
 
-Any action that requires dragging must have a single-pointer alternative (e.g., buttons, inputs). See the [dragging movements pattern](references/A11Y-PATTERNS.md#dragging-movements) for a sortable-list example.
+Any action that requires dragging must have a single-pointer alternative (e.g., buttons, inputs). See the [dragging movements pattern](A11Y-PATTERNS.md#dragging-movements) for a sortable-list example.
 
 ### Timing (2.2)
 
@@ -418,11 +328,11 @@ If a help mechanism (contact info, chat widget, FAQ link, self-help option) is r
 
 ### Form labels (3.3.2)
 
-Every input needs a programmatically associated label. See the [form labels pattern](references/A11Y-PATTERNS.md#form-labels) for explicit, implicit, and instructional examples.
+Every input needs a programmatically associated label. See the [form labels pattern](A11Y-PATTERNS.md#form-labels) for explicit, implicit, and instructional examples.
 
 ### Error handling (3.3.1, 3.3.3)
 
-Announce errors to screen readers with `role="alert"` or `aria-live`, set `aria-invalid="true"` on invalid fields, and focus the first error on submit. See the [error handling pattern](references/A11Y-PATTERNS.md#error-handling) for full markup and JS.
+Announce errors to screen readers with `role="alert"` or `aria-live`, set `aria-invalid="true"` on invalid fields, and focus the first error on submit. See the [error handling pattern](A11Y-PATTERNS.md#error-handling) for full markup and JS.
 
 ### Redundant entry (3.3.7), new in 2.2
 
@@ -477,11 +387,11 @@ Login flows must not rely on cognitive function tests (e.g., remembering a passw
 <label><input type="checkbox"> Option</label>
 ```
 
-**When ARIA is needed,** use the correct roles and states. See the [ARIA tabs pattern](references/A11Y-PATTERNS.md#aria-tabs) for a complete tablist example.
+**When ARIA is needed,** use the correct roles and states. See the [ARIA tabs pattern](A11Y-PATTERNS.md#aria-tabs) for a complete tablist example.
 
 ### Live regions (4.1.3)
 
-Use `aria-live` regions to announce dynamic content changes without moving focus. See the [live regions pattern](references/A11Y-PATTERNS.md#live-regions-and-notifications) for markup and a `showNotification()` helper.
+Use `aria-live` regions to announce dynamic content changes without moving focus. See the [live regions pattern](A11Y-PATTERNS.md#live-regions-and-notifications) for markup and a `showNotification()` helper.
 
 ---
 
@@ -510,7 +420,7 @@ axe https://example.com
 - [ ] **Focus order:** Logical and follows visual order
 - [ ] **Target size:** Interactive elements meet 24×24px minimum
 
-See the [screen reader commands reference](references/A11Y-PATTERNS.md#screen-reader-commands) for VoiceOver and NVDA shortcuts.
+See the [screen reader commands reference](A11Y-PATTERNS.md#screen-reader-commands) for VoiceOver and NVDA shortcuts.
 
 ---
 
@@ -542,6 +452,6 @@ See the [screen reader commands reference](references/A11Y-PATTERNS.md#screen-re
 - [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/)
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 - [Deque axe Rules](https://dequeuniversity.com/rules/axe/)
-- [Web Quality Audit](../web-quality-audit/SKILL.md)
-- [WCAG criteria reference](references/WCAG.md)
-- [Accessibility code patterns](references/A11Y-PATTERNS.md)
+- The core Delivery Gate in `antislop.md` (R-39, R-40, R-41)
+- [WCAG criteria reference](WCAG.md)
+- [Accessibility code patterns](A11Y-PATTERNS.md)

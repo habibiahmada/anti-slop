@@ -157,15 +157,11 @@ The core prevents slop but cannot invent direction. `DESIGN.md` (yours) supplies
 | Skill | Covers | Pick it for |
 |-------|--------|-------------|
 | antislop | The core filter: rules, tiers, the Delivery Gate, liveliness | Everything. Always loaded |
-| antislop-ui | Layout, color, components, decoration, motion, structure | UI and visual work |
+| antislop-ui | Layout, color, components, decoration, motion, structure, plus performance, Core Web Vitals, web best practices | UI and visual work |
 | antislop-copywriting | Headlines, CTAs, tone, fake stats, anti-AI writing, markdown hygiene | Copy and text |
-| antislop-human | Contrast, keyboard, focus, states | Accessibility |
+| antislop-human | Contrast, keyboard, focus, states, plus WCAG 2.2, pointer cursor and interaction affordances | Accessibility |
 | antislop-layoutmobile | Reflow across screen widths, breakpoints, grids, overflow, tap targets | Responsive work |
 | antislop-code | AI-slop comments: which to remove, which to keep | Comment cleanup |
-| antislop-accessibility | WCAG 2.2, pointer cursor and interaction affordances, semantics, forms, ARIA (native, strict) | Every UI task |
-| antislop-performance | Performance budget, rendering path, images, fonts, caching (native) | Every page |
-| antislop-core-web-vitals | LCP, INP, CLS with field and lab evidence (native) | Every page |
-| antislop-best-practices | Security baseline, compatibility, console errors, valid HTML (native) | Every page |
 
 Install one, several, or the core alone.
 
@@ -227,7 +223,7 @@ Thanks to everyone who helps make antislop better.
 
 <p align="center">
   <a href="https://github.com/miqdadbadjuber/anti-slop/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=miqdadbadjuber/anti-slop&v=3.3.0" alt="antislop contributors" />
+    <img src="https://contrib.rocks/image?repo=miqdadbadjuber/anti-slop&v=3.3.1" alt="antislop contributors" />
   </a>
 </p>
 

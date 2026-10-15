@@ -8,8 +8,8 @@
     {
       "name": "antislop",
       "source": "./",
-      "version": "3.3.0",
-      "description": "Anti Slop: Rules for AI Coding Agents. Stops generic AI slop in generated UI, copy, and code. Loads as ten skills."
+      "version": "3.3.1",
+      "description": "Anti Slop: Rules for AI Coding Agents. Stops generic AI slop in generated UI, copy, and code. Loads as six skills."
     }
   ]
 }

@@ -1,7 +1,7 @@
 ---
 name: antislop-ui
-description: "UI and visual skill for antislop. Use when building or editing any interface: color, layout, components, motion. Load with the core."
-allowed-tools: Read Write Edit Glob Grep
+description: "UI and visual skill for antislop, with native web quality. Use when building or editing any interface: color, layout, components, motion, plus performance, Core Web Vitals (LCP, INP, CLS), and web best practices (security, compatibility, console errors). Load with the core. Enforces R-40, R-41."
+allowed-tools: Bash(npx *) Read Write Edit Glob Grep
 ---
 # antislop-ui
 
@@ -13,6 +13,7 @@ allowed-tools: Read Write Edit Glob Grep
 
 - Load together with `antislop.md` whenever the task is UI or visual work. The core holds the mechanism (the purpose test, the three tiers, the Delivery Gate); this skill holds UI-specific depth.
 - Every entry has the same shape: **Tell** (the pattern), **Why** (why it reads as slop), **Fix** (what to do instead), with the governing core rule cited as R-XX.
+- Performance, Core Web Vitals, and web best practices are native to this skill: they apply to every page and component it touches, with full references in `references/`.
 - The Delivery Gate in the core remains the gate. The "UI Skill Checklist" at the end of this file is the UI-specific supplement to run alongside it.
 
 ## Visual & Color
@@ -290,6 +291,54 @@ The patterns above are landing-page shapes. These are the app-side equivalents: 
 - **Why:** a page where everything animates has no focal point. Motion becomes wallpaper.
 - **Fix:** choreograph motion to a purpose and to the MOTION dial (R-19). Not everything moves. The hero speaks, the supporting elements stay calm. Claimed "cinematic" pages must actually move; claimed "static" pages must not.
 
+## Performance & Web Quality
+
+A page that looks finished but loads slowly, shifts under the thumb, or logs errors is still slop: it was built for the screenshot, not for use. This section is native: it applies to every page and component this skill touches. Measure, do not guess, and never report a number that was not measured (R-36).
+
+### Unsized Media That Shifts the Layout
+
+- **Tell:** `<img>`, `<video>`, `<iframe>`, ads, or embeds with no `width`/`height` or `aspect-ratio`; a cookie banner or late font that pushes content down.
+- **Why:** the page jumps while people read or tap, and they hit the wrong control. It is the CLS failure behind most "the page moved" complaints (R-40).
+- **Fix:** give every media element intrinsic dimensions or `aspect-ratio`, reserve space for anything that loads late, overlay banners instead of inserting them above content, and match fallback font metrics. Target CLS 0.1 or less.
+
+### Hero Image Loaded Like Any Other Image
+
+- **Tell:** the largest above-the-fold image is `loading="lazy"`, is set as a CSS background, is injected by JavaScript, or is a multi-megabyte PNG/JPEG with no `srcset`.
+- **Why:** the browser discovers the most important pixel last. LCP slips past 2.5s and the first impression is an empty box (R-40).
+- **Fix:** an `<img>` in the HTML with `fetchpriority="high"`, never lazy, in AVIF/WebP with `srcset` and `sizes`; lazy-load only what is below the fold. Target LCP 2.5s or less.
+
+### Main Thread Blocked on Interaction
+
+- **Tell:** click and input handlers that do heavy work synchronously, huge re-renders on every keystroke, third-party tags that run long tasks.
+- **Why:** the tap registers but nothing paints for hundreds of milliseconds, so people tap again. That is a poor INP (R-40).
+- **Fix:** paint feedback first, then yield (`scheduler.yield()` or `setTimeout`), split work over 50ms, debounce input, virtualize long lists, and defer non-critical third-party scripts. Target INP 200ms or less.
+
+### Render-Blocking and Oversized Delivery
+
+- **Tell:** synchronous scripts and third-party tags in `<head>`, a whole icon or UI library imported for three components, unsubset web fonts without `font-display`, no caching headers on hashed assets.
+- **Why:** every byte before first paint is waiting time on a phone on a slow network. It is the default AI build: everything imported, nothing budgeted (R-40).
+- **Fix:** `defer`/`async` or load on interaction, import only what is used, self-host and subset fonts with `font-display: swap` and preload only the critical one, and cache hashed assets as `immutable`. Keep a written budget.
+
+### Missing Document Basics and Console Errors
+
+- **Tell:** no doctype, `charset`, or viewport meta; `user-scalable=no`; errors or warnings in the console; `document.write`, synchronous XHR, `unload` listeners; non-passive scroll listeners.
+- **Why:** the page renders in quirks mode or breaks on another browser, blocks zoom for low-vision users, and the errors signal features that silently do not work (R-41).
+- **Fix:** `<!doctype html>`, `<meta charset="utf-8">` first, `width=device-width, initial-scale=1` with zoom allowed, zero console errors after a click-through (R-35), modern APIs, and `{ passive: true }` where `preventDefault` is not called.
+
+### Insecure Defaults
+
+- **Tell:** mixed `http://` resources, `target="_blank"` without `rel="noopener noreferrer"`, API keys in client bundles, `innerHTML` with user input, unpinned CDN scripts, a permission prompt on page load.
+- **Why:** each one is a real exposure for real users, and none of them is visible in a screenshot (R-41).
+- **Fix:** HTTPS everywhere, `rel="noopener noreferrer"`, secrets only on the server, `textContent` or a sanitizer instead of raw HTML, Subresource Integrity on third-party CDN assets, a CSP where you control headers, and permissions requested only after a user action.
+
+### Web Quality References
+
+Read the matching reference on demand instead of guessing:
+
+- [references/CORE-WEB-VITALS.md](references/CORE-WEB-VITALS.md), with [LCP](references/LCP.md), [INP](references/INP.md), and [CLS](references/CLS.md): thresholds, causes, trace reading, and framework quick fixes.
+- [references/PERFORMANCE.md](references/PERFORMANCE.md), with [MEASUREMENT](references/MEASUREMENT.md) and [RUM](references/RUM.md): budget, critical rendering path, images, fonts, caching, runtime, third parties, and field data.
+- [references/BEST-PRACTICES.md](references/BEST-PRACTICES.md), with [SECURITY](references/SECURITY.md): compatibility, deprecated APIs, console errors, source maps, valid and semantic HTML, permissions, CSP, SRI, and headers.
+
 ## UI Skill Checklist
 
 Run these alongside the core Delivery Gate when the task is UI work. All answers must be **yes**:
@@ -309,3 +358,5 @@ Run these alongside the core Delivery Gate when the task is UI work. All answers
 - [ ] Do empty form fields and table cells stay empty or carry honest placeholders (Your Name, email@example.com) instead of fake-looking data (John Doe, johndoe@example.com)? (R-23, R-38)
 - [ ] Do the empty, loading, and error states name the cause and the next action instead of saying "No data"? (R-27)
 - [ ] Does the page hold up at every breakpoint, theme, and state, and pass keyboard-only use? (R-03, R-34, C-4)
+- [ ] Is every media element sized, the LCP image prioritized and not lazy, and the main thread free during interactions, within LCP 2.5s, INP 200ms, CLS 0.1, with any reported metric actually measured? (R-40, R-36)
+- [ ] Are doctype, charset, and a zoom-allowing viewport present, the console free of errors, and the page free of mixed content, client secrets, unpinned CDN assets, and on-load permission prompts? (R-41)

@@ -8,7 +8,7 @@ import sys
 
 PROTOCOL_VERSION = "2024-11-05"
 SERVER_NAME = "antislop-contrast"
-SERVER_VERSION = "3.3.0"
+SERVER_VERSION = "3.3.1"
 
 TOOLS = [
     {

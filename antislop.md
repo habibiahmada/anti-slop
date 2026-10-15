@@ -21,15 +21,11 @@ If no antislop pointer exists and this file is being read for the first time, ru
 1. **Declare the setup before doing anything.** Tell the user you will (a) get the chosen skill(s) in place in `skills/<name>/` subfolders next to this file (the user fetches them; the agent never downloads from the network, see step 4), and (b) append an antislop pointer block at the end of the project's entry file. Get approval. Never modify the entry file silently.
 2. **Ask which skills to install** (multi-select, in the user's chat language). List only the skills that exist in this version of antislop:
    - **1. All** (recommended): install every available skill. Choose this when the work spans UI, copy, people, or mobile layout.
-   - **2. `antislop-ui`** (UI / visual): pick this for building or editing a website, web app, or interface: color, layout, components, decoration, motion.
+   - **2. `antislop-ui`** (UI / visual): pick this for building or editing a website, web app, or interface: color, layout, components, decoration, motion, plus native performance, Core Web Vitals, and web best practices (R-40, R-41).
    - **3. `antislop-copywriting`** (copy & text): pick this for writing or editing copy: headlines, CTAs, value propositions, tone, landing-page text, product prose.
-   - **4. `antislop-human`** (people): pick this for making sure a UI works for people with different eyes, hands, and setups: contrast, keyboard, focus, states.
+   - **4. `antislop-human`** (people): pick this for making sure a UI works for people with different eyes, hands, and setups: contrast, keyboard, focus, states, plus native WCAG 2.2 depth: pointer cursor and interaction affordances, semantics, forms, ARIA, reduced motion (R-39).
    - **5. `antislop-layoutmobile`** (mobile / responsive): pick this for layouts that have to reflow across screen sizes, phone to desktop: breakpoints, scale, grids, overflow, tap targets.
    - **6. `antislop-code`** (code comments): pick this for writing or editing code comments: remove generic AI-slop comments, keep the valuable ones, never touch the code.
-   - **7. `antislop-accessibility`** (native, strict): WCAG 2.2 in depth: semantic HTML, accessible names, cursor and interaction affordances, keyboard, forms, ARIA, motion (R-39).
-   - **8. `antislop-performance`** (native): performance budget, critical rendering path, images, fonts, caching, third-party cost (R-40).
-   - **9. `antislop-core-web-vitals`** (native): LCP, INP, and CLS measured with field and lab evidence (R-40).
-   - **10. `antislop-best-practices`** (native): security baseline, compatibility, console errors, deprecated APIs, valid HTML (R-41).
    - New skills appear here as they ship; never offer a skill that does not exist in this version.
 
    If the user declines or says "core only", stop here and use this file alone as the filter. Do not install anything.
@@ -42,16 +38,12 @@ If no antislop pointer exists and this file is being read for the first time, ru
    ```md
    <!-- antislop:start -->
    ## antislop
-   For UI, copy, people, mobile layout, code comments, accessibility, performance, or web best-practices work, read `antislop.md` (core) and then the skill for the task:
+   For UI, copy, people, mobile layout, or code comments work, read `antislop.md` (core) and then the skill for the task:
    - UI / visual: `skills/antislop-ui/SKILL.md`
    - Copy & text: `skills/antislop-copywriting/SKILL.md`
    - People: `skills/antislop-human/SKILL.md`
    - Mobile / responsive: `skills/antislop-layoutmobile/SKILL.md`
    - Code comments: `skills/antislop-code/SKILL.md`
-   - Accessibility (native, strict): `skills/antislop-accessibility/SKILL.md`
-   - Performance (native): `skills/antislop-performance/SKILL.md`
-   - Core Web Vitals (native): `skills/antislop-core-web-vitals/SKILL.md`
-   - Web best practices (native): `skills/antislop-best-practices/SKILL.md`
    Before starting, follow the core's "Two Usage Modes" section in strict order: explicit session instruction first, then global preference, then ask. A session instruction always wins. For a resolved mode, say `antislop active: <mode> (session override).` or `antislop active: <mode> (global preference).` once before presenting findings or making edits, using the actual mode and source. Acknowledging the user's request without naming the source does not replace this notice.
    Only an explicit choice of antislop during or after selects a session mode. A request to review, audit, or avoid file edits does not select a mode; read the global preference in that case. Another skill's mode does not select antislop's mode.
    If the mode is unresolved, ask during/after and end the response; wait for the answer before any UI review, planning, or concept. For read-only tasks, put the active-mode notice only at the start of the final answer, never in progress messages. For editing tasks, announce before the first edit and omit it from the final answer.
@@ -434,7 +426,7 @@ If an element genuinely cannot have a destination yet, remove it instead of ship
 
 #### R-39 — Accessible Semantics & Interaction Affordances
 
-Accessibility is a build requirement, not a polish pass. Load `antislop-accessibility` for every UI task.
+Accessibility is a build requirement, not a polish pass. It is native to `antislop-human`: load it for every UI task.
 
 - **REQUIRED**: every enabled interactive element (`a[href]`, `button`, `summary`, `select`, `label[for]`, checkbox, radio, custom `role="button"`/`tab`/`switch`) shows `cursor: pointer`, set once in the base CSS layer; disabled controls show `cursor: not-allowed`
 - **REQUIRED**: actions are `<button>`, navigation is `<a href>` to a real destination; no clickable `div`/`span` without role, `tabindex`, and Enter/Space handling
@@ -447,7 +439,7 @@ Accessibility is a build requirement, not a polish pass. Load `antislop-accessib
 
 #### R-40 — Performance & Core Web Vitals Budget
 
-Load `antislop-performance` and `antislop-core-web-vitals` for every page or component you build or edit.
+Performance and Core Web Vitals are native to `antislop-ui`: load it for every page or component you build or edit.
 
 - **REQUIRED**: design to the "Good" thresholds at the 75th percentile: LCP 2.5s or less, INP 200ms or less, CLS 0.1 or less
 - **REQUIRED**: every `<img>`, `<video>`, and `<iframe>` has `width` and `height` (or `aspect-ratio`); space for late content (ads, embeds, banners) is reserved
@@ -459,7 +451,7 @@ Load `antislop-performance` and `antislop-core-web-vitals` for every page or com
 
 #### R-41 — Web Best Practices & Security Baseline
 
-Load `antislop-best-practices` for every web page or app you build or edit.
+Web best practices are native to `antislop-ui`: load it for every web page or app you build or edit.
 
 - **REQUIRED**: `<!doctype html>`, `<meta charset="utf-8">` first in `<head>`, and `<meta name="viewport" content="width=device-width, initial-scale=1">`
 - **REQUIRED**: HTTPS for every resource; no mixed content; external links opened in a new tab carry `rel="noopener noreferrer"`

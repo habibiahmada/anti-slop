@@ -1,20 +1,6 @@
----
-name: antislop-best-practices
-description: "Web best-practices skill for antislop. Load for ANY web code you build or edit: security headers, HTTPS, compatibility, deprecated APIs, console errors, valid semantic HTML, permissions. Enforces R-41."
-allowed-tools: Read Write Edit Glob Grep
----
-# antislop-best-practices
+# Web Best Practices
 
-> Anti Slop: Rules for AI Coding Agents. Native web-quality skill
-
-> Part of the antislop system. Read together with `antislop.md` (the core). This skill deep-dives security, browser compatibility, and code quality of the shipped page. Adapted from the MIT-licensed `best-practices` skill of [web-quality-skills](https://github.com/addyosmani/web-quality-skills) by Addy Osmani.
-
-## How to use this skill
-
-- **Native, not optional.** Load this skill together with the core for every UI or web task, not only when someone asks for an audit. Its governing core rules (R-33, R-35, R-41) are Hard Gate: a FAIL blocks delivery.
-- Build it right the first time. The guidance below is how the page is written, not a checklist bolted on at the end.
-- Every PASS in the core Delivery Gate needs evidence: a command run, a trace read, an element inspected. Never claim a score or a metric that was not measured (R-36).
-- When this skill and the visual skills disagree, function wins: an accessible, fast page with a plain look beats a beautiful page that excludes people or stalls.
+> Reference for antislop. Adapted from the MIT-licensed web-quality-skills by Addy Osmani (https://github.com/addyosmani/web-quality-skills); see LICENSE-web-quality-skills in the skill folder.
 
 Modern web development standards based on Lighthouse best practices audits. Covers security, browser compatibility, and code quality patterns.
 
@@ -31,7 +17,7 @@ If live tools are unavailable, use the Lighthouse CLI plus focused dependency an
 
 ## Security
 
-Read [the security reference](references/SECURITY.md) when security is in scope or a live audit surfaces a related failure. It covers HTTPS/HSTS, CSP and Trusted Types, Subresource Integrity, headers, dependencies, sanitization, and cookies.
+Read [the security reference](SECURITY.md) when security is in scope or a live audit surfaces a related failure. It covers HTTPS/HSTS, CSP and Trusted Types, Subresource Integrity, headers, dependencies, sanitization, and cookies.
 
 At minimum:
 
@@ -484,4 +470,4 @@ findNearbyButton.addEventListener('click', async () => {
 
 - [MDN Web Security](https://developer.mozilla.org/en-US/docs/Web/Security)
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [Web Quality Audit](../web-quality-audit/SKILL.md)
+- The core Delivery Gate in `antislop.md` (R-39, R-40, R-41)

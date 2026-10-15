@@ -17,25 +17,17 @@ export const END = '<!-- antislop:skills:end -->'
 // description is written for an agent to match on, not for a person to read.
 const NOTES = {
   antislop:
-    'The core, and it is always loaded. All 41 rules and the Delivery Gate live here, so every task gets them whether or not you pick anything else. The nine skills below add depth to it.',
+    'The core, and it is always loaded. All 41 rules and the Delivery Gate live here, so every task gets them whether or not you pick anything else. The five skills below add depth to it.',
   'antislop-ui':
-    'Load it when the AI builds or restyles anything you can see: color, layout, cards, buttons, motion.',
+    'Load it when the AI builds or restyles anything you can see: color, layout, cards, buttons, motion. Performance, Core Web Vitals, and web best practices are built in.',
   'antislop-copywriting':
     'Load it when the AI writes or edits text: headlines, buttons, emails, or a page of prose. It removes the excited, empty voice and the made-up numbers.',
   'antislop-human':
-    'Load it when real people have to use the result. Readable colors, keyboard use, visible focus, button states, and the contrast checker.',
+    'Load it when real people have to use the result. Readable colors, keyboard use, visible focus, button states, pointer cursor and the other interaction affordances, full WCAG 2.2 references, and the contrast checker.',
   'antislop-layoutmobile':
     'Load it when the same page has to work on a phone and on a desktop. Reflow, breakpoints, overflow, tap targets, mobile navigation.',
   'antislop-code':
     'Load it when the AI writes or reviews code comments. It removes the ones an AI adds out of habit and keeps the ones that carry information.',
-  'antislop-accessibility':
-    'Native and strict: loads for every UI task. WCAG 2.2 in depth, plus the interaction affordances people notice first: pointer cursor, real buttons and links, names, states, labels, reduced motion.',
-  'antislop-performance':
-    'Native: loads for every page. A performance budget, the critical rendering path, images, fonts, caching, and the cost of third-party scripts.',
-  'antislop-core-web-vitals':
-    'Native: loads for every page. LCP, INP, and CLS, measured with field and lab evidence before anything is claimed.',
-  'antislop-best-practices':
-    'Native: loads for every page. HTTPS and security headers, compatibility, no console errors or deprecated APIs, valid semantic HTML.',
 }
 
 // A pattern entry opens with one of these labels; every other heading under a skill is prose.

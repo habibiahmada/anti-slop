@@ -242,6 +242,10 @@ const SKILL_LINES = {
   'antislop-human': 'People: `antislop-human`',
   'antislop-layoutmobile': 'Mobile / responsive: `antislop-layoutmobile`',
   'antislop-code': 'Code comments: `antislop-code`',
+  'antislop-accessibility': 'Accessibility (native, strict): `antislop-accessibility`',
+  'antislop-performance': 'Performance (native): `antislop-performance`',
+  'antislop-core-web-vitals': 'Core Web Vitals (native): `antislop-core-web-vitals`',
+  'antislop-best-practices': 'Web best practices (native): `antislop-best-practices`',
 }
 
 export const SKILL_NAMES = Object.keys(SKILL_LINES)

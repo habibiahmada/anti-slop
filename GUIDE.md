@@ -31,6 +31,10 @@ This guide goes from zero to installed. Every route below carries its own update
   - [antislop-human](#antislop-human)
   - [antislop-layoutmobile](#antislop-layoutmobile)
   - [antislop-code](#antislop-code)
+  - [antislop-accessibility](#antislop-accessibility)
+  - [antislop-performance](#antislop-performance)
+  - [antislop-core-web-vitals](#antislop-core-web-vitals)
+  - [antislop-best-practices](#antislop-best-practices)
 - [Reference](#reference)
   - [Which version do I have?](#which-version-do-i-have)
   - [Usage modes](#usage-modes)
@@ -45,7 +49,7 @@ This guide goes from zero to installed. Every route below carries its own update
 
 A rulebook the assistant reads every session, plus optional skills that go deeper into one kind of work.
 
-- **38 rules in three tiers.** Hard Gate rules are absolute. The other two ask whether a choice has a purpose, and reject technique that has none.
+- **41 rules in three tiers.** Hard Gate rules are absolute. The other two ask whether a choice has a purpose, and reject technique that has none.
 - **A Delivery Gate.** Before anything ships, the assistant runs a mandatory PASS/FAIL report you can check.
 - **A Liveliness Toolkit.** Three dials and a Design Read, so the result comes out alive rather than merely clean.
 - **Six skills.** One core that always loads, plus five that load only when a task needs them.
@@ -553,7 +557,7 @@ The core is always loaded. The five skills load only when your task needs them. 
 <!-- antislop:skills:start -->
 ### antislop
 
-The core, and it is always loaded. All 38 rules and the Delivery Gate live here, so every task gets them whether or not you pick anything else. The five skills below add depth to it.
+The core, and it is always loaded. All 41 rules and the Delivery Gate live here, so every task gets them whether or not you pick anything else. The nine skills below add depth to it.
 
 ### antislop-ui
 
@@ -611,6 +615,26 @@ Load it when the AI writes or reviews code comments. It removes the ones an AI a
 |----------------|-----------------------|
 | Comments That Add Nothing | Decorative Separators, Restating the Obvious, Workflow Narration, Empty Labels, Vague Placeholders, Signature Echo, Decorative Emoji, End Markers |
 | How It Should Read | The Over-Explained Comment, Line-by-Line Narration, Stiff or Loud Wording |
+
+### antislop-accessibility
+
+Native and strict: loads for every UI task. WCAG 2.2 in depth, plus the interaction affordances people notice first: pointer cursor, real buttons and links, names, states, labels, reduced motion.
+
+| What it covers | The patterns it names |
+|----------------|-----------------------|
+| Interaction Affordances (antislop strict layer) | Clickable Without a Pointer Cursor, Div or Span Pretending to Be a Control, Icon-Only Control With No Name, No Hover, Active, or Disabled State, Hit Area Smaller Than the Target, Motion That Ignores the User Setting, Missing Page-Level Semantics, Form Field Without a Real Label |
+
+### antislop-performance
+
+Native: loads for every page. A performance budget, the critical rendering path, images, fonts, caching, and the cost of third-party scripts.
+
+### antislop-core-web-vitals
+
+Native: loads for every page. LCP, INP, and CLS, measured with field and lab evidence before anything is claimed.
+
+### antislop-best-practices
+
+Native: loads for every page. HTTPS and security headers, compatibility, no console errors or deprecated APIs, valid semantic HTML.
 <!-- antislop:skills:end -->
 
 ## Reference
@@ -716,13 +740,14 @@ Consumer access ended on 18 June 2026 and Antigravity replaced it, but it was no
 
 A skill is an optional folder (with a `SKILL.md` inside) that goes deeper into one concern. The core works alone; a skill adds depth for one topic. Skills reference the core rules by number and never duplicate them, so adding one does not change the core.
 
-There are five skills on top of the core. Pick the one that matches your work:
+There are nine skills on top of the core. Pick the one that matches your work:
 
 - UI work (look and feel: layout, color, components, animation) → antislop-ui
 - Copy work (headlines, buttons, tone, made-up statistics) → antislop-copywriting
 - People work (readable colors, keyboard use, focus, button states) → antislop-human
 - Responsive layout work (reflowing across every screen width, phone to desktop, tap targets, navigation) → antislop-layoutmobile
 - Code comments work (remove generic AI comments, keep the valuable ones) → antislop-code
+- Any UI or web page → antislop-accessibility, antislop-performance, antislop-core-web-vitals, antislop-best-practices (native: they load every time)
 - More than one kind of work → pick several. The installer lets you choose as many as you want.
 - None of these → fine. The core alone is a complete filter.
 

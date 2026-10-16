@@ -75,6 +75,7 @@ Every door is verified against the vendor's current documentation before its ver
 | Version | Item | What it means |
 |---------|------|---------------|
 | v3.2.21 | Maintenance | A macOS probe, because none of the door probes above ran on it, so a report from that platform can be split into what the installer got wrong and what the agent's own configuration explains. No new agent: a `windows-latest` CI job, because CI runs on Linux alone while this repository is developed on Windows, plus a re-check of the plugin-door probes against real installs and probes for the three doors the installer still cannot see (Kimi Code, Cline, and Oh My Pi), so the notice that follows an install names all seven rather than four. |
+| v3.2.22 | Web quality gates | Three Hard Gate rules close the gap between a page that passes the gate and a page people can use: R-39 for semantics and interaction affordances (pointer cursor, real controls, accessible names, states, labels, reduced motion), R-40 for a Core Web Vitals budget (LCP 2.5s, INP 200ms, CLS 0.1), and R-41 for page basics and a security baseline. No new skill: the depth is native to `antislop-human` and `antislop-ui`, with WCAG 2.2, performance, and best-practices references adapted from the MIT-licensed web-quality-skills and read on demand. No new agent. |
 
 Beyond the numbered plan, with no promised version:
 

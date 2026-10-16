@@ -1,7 +1,7 @@
 ---
 name: antislop-human
-description: "Human and accessibility skill for antislop. Contrast, keyboard, focus, and states for real people. Includes the contrast checker."
-allowed-tools: Bash(python *) Bash(python3 *) Read Write Edit Glob Grep
+description: "Human and accessibility skill for antislop, native and strict (WCAG 2.2). Load for EVERY UI task: contrast, keyboard, focus, pointer cursor and interaction affordances, semantic HTML, accessible names, forms, ARIA, reduced motion. Includes the contrast checker. Enforces R-25, R-32, R-39."
+allowed-tools: Bash(python *) Bash(python3 *) Bash(npx *) Read Write Edit Glob Grep
 ---
 # antislop-human
 
@@ -14,6 +14,7 @@ allowed-tools: Bash(python *) Bash(python3 *) Read Write Edit Glob Grep
 - Load together with `antislop.md` whenever the task builds or edits UI. The core holds the mechanism (the purpose test, the three tiers, the Delivery Gate); this skill holds the human-side depth: the parts of a UI that exclude people with different eyes, hands, and setups.
 - Every entry has the same shape: **Tell** (the pattern), **Why** (who it excludes, and why it reads as unfinished), **Fix** (what to do instead), with the governing core rule cited as R-XX.
 - Accessibility is not a checklist of extras bolted on at the end. It is part of the core promise that "the UI holds up" (C-4). The Delivery Gate in the core remains the gate; the "Human Skill Checklist" at the end of this file is the supplement to run alongside it.
+- This skill is antislop's native accessibility layer: it loads for every UI task, not only on an audit request. It holds contrast, keyboard, focus, the interaction affordances (pointer cursor, real controls, names, states, labels, reduced motion), and the full WCAG 2.2 reference set in `references/`.
 - The contrast checker (formula + reference table + script) lives in this skill. Use it for every color pairing you cannot verify by eye.
 - This skill keeps only the mobile details that exclude people: zooming, and the on-screen keyboard.
 
@@ -135,6 +136,92 @@ The layout mechanics behind mobile (breakpoints, scale, grids, overflow, tap tar
 - **Why:** a form the user cannot see or reach is a form they cannot complete. It is a mobile-only exclusion (R-03).
 - **Fix:** when an input is focused, it scrolls into view above the keyboard, with enough bottom padding that the focused field is never covered. Test with a real device or an emulated keyboard.
 
+## Interaction Affordances (antislop strict layer)
+
+This layer is antislop's own addition and is enforced by R-39. It covers the small signals that tell a person "this can be used", for mouse, touch, keyboard, and assistive tech at once. A UI that looks right but hides these signals is unfinished.
+
+### Clickable Without a Pointer Cursor
+
+- **Tell:** a `<button>`, a `<summary>`, a `<label>` for a checkbox, a custom `[role="button"]`, a clickable card, or a styled `<select>` that keeps the arrow cursor. Common after a CSS reset (Tailwind preflight resets `button` to `cursor: default`).
+- **Why:** the cursor is the first affordance a mouse user reads. An arrow over a control says "this is text", so people hesitate or never click. It reads as a template that was styled but never used.
+- **Fix:** every enabled interactive element gets `cursor: pointer`, set once in the base layer, not per component. Disabled controls get `cursor: not-allowed`. Text inputs keep `cursor: text`; drag handles get `grab` / `grabbing`. Never put `cursor: pointer` on something that does nothing (R-26).
+
+```css
+/* Base layer: one place, every interactive element */
+a[href], button, summary, select, label[for],
+[role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="option"], [role="switch"],
+input[type="checkbox"], input[type="radio"], input[type="file"],
+input[type="submit"], input[type="button"], input[type="reset"], input[type="range"], input[type="color"] {
+  cursor: pointer;
+}
+:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+```
+
+### Div or Span Pretending to Be a Control
+
+- **Tell:** `<div onClick>`, `<span onClick>`, or `<a>` without `href` used as a button; `<a href="#" onClick>` used for an action.
+- **Why:** it is invisible to the keyboard and to screen readers: no focus, no Enter/Space, no role. A whole group of people cannot press it.
+- **Fix:** an action is a `<button type="button">`, a navigation is an `<a href>` to a real destination. Only when neither is possible: add `role`, `tabindex="0"`, Enter and Space handlers, and the state attributes (`aria-pressed`, `aria-expanded`).
+
+### Icon-Only Control With No Name
+
+- **Tell:** a close, menu, search, or social button that contains only an SVG or icon font, with no text, `aria-label`, or visually hidden label.
+- **Why:** a screen reader announces "button" and nothing else. Voice-control users cannot say its name.
+- **Fix:** give it an accessible name (`aria-label="Close dialog"` or a `.sr-only` span), mark the icon `aria-hidden="true"`, and add a visible tooltip only if it helps sighted users too. Use the same word the visible UI uses (WCAG 2.5.3).
+
+### No Hover, Active, or Disabled State
+
+- **Tell:** buttons and links that look identical at rest, on hover, while pressed, and when disabled; a disabled button that is only greyed out and still clickable.
+- **Why:** state feedback tells people their action registered. Without it a click feels lost and a disabled control looks broken.
+- **Fix:** distinct `:hover`, `:active`, `:focus-visible`, and disabled styles, each not dependent on color alone. Prefer the `disabled` attribute; if a disabled control must stay focusable for a tooltip, use `aria-disabled="true"` and block the action in code.
+
+### Hit Area Smaller Than the Target
+
+- **Tell:** a 16px icon button with no padding, inline links packed so tight that a thumb hits the neighbor, a checkbox whose label is not clickable.
+- **Why:** small targets exclude people with tremor, low precision, or a phone in one hand (WCAG 2.5.8).
+- **Fix:** at least 24x24 CSS px with spacing everywhere, and 44x44 for primary touch controls (R-03). Wrap checkboxes and radios in their `<label>` so the text is part of the target.
+
+### Motion That Ignores the User Setting
+
+- **Tell:** parallax, auto-playing carousels, scroll-jacking, or large entrance animations that still run under `prefers-reduced-motion: reduce`.
+- **Why:** motion can trigger nausea and vestibular disorders, and an auto-advancing carousel moves content away from slow readers (WCAG 2.2.2, 2.3.3).
+- **Fix:** wrap non-essential motion in `@media (prefers-reduced-motion: no-preference)`, and give anything that moves for more than 5 seconds a visible pause control.
+
+### Missing Page-Level Semantics
+
+- **Tell:** no `lang` on `<html>`, no `<main>`, headings chosen for size instead of order, a generic `<title>` on every page, no skip link on a page with a long navigation.
+- **Why:** screen-reader users navigate by landmarks, headings, and the page title; without them the page is one long undifferentiated stream, read in the wrong language voice.
+- **Fix:** `<html lang>`, one `<main>`, `<header>`/`<nav>`/`<footer>` landmarks, one `<h1>` and no skipped levels, a unique descriptive `<title>`, and a "Skip to content" link as the first focusable element.
+
+### Form Field Without a Real Label
+
+- **Tell:** placeholder used as the only label, a label not tied to its input, errors shown only as a red border, required fields marked only with a red asterisk.
+- **Why:** the placeholder disappears on typing and is low contrast; unlabeled inputs are announced as "edit text"; color-only errors are invisible to many.
+- **Fix:** a visible `<label for>` on every field, `autocomplete` tokens for personal data, `aria-invalid` plus an error message linked with `aria-describedby`, and the word "required" (or `required` attribute) next to the asterisk. Move focus to the first error on submit.
+
+### Accessibility Affordance Checklist
+
+Run with the core Delivery Gate and the Human Skill Checklist (R-39). All answers must be **yes**:
+
+- [ ] Does every enabled interactive element show `cursor: pointer` (and disabled ones `not-allowed`), set once in the base layer?
+- [ ] Is every action a `<button>` and every navigation an `<a href>`, with no clickable `div`/`span`?
+- [ ] Does every icon-only control have an accessible name, with the icon `aria-hidden`?
+- [ ] Do controls have distinct hover, active, focus-visible, and disabled states, not color only?
+- [ ] Is every target at least 24x24 CSS px (44x44 for primary touch controls)?
+- [ ] Does all non-essential motion stop under `prefers-reduced-motion: reduce`?
+- [ ] Are `lang`, `<title>`, landmarks, heading order, and a skip link in place?
+- [ ] Does every form field have a visible label, `autocomplete` where relevant, and text errors linked to the field?
+
+## WCAG 2.2 Depth
+
+The full WCAG 2.2 guidance ships with this skill as references, read on demand. Open the one that matches the task instead of guessing a success criterion:
+
+- [references/ACCESSIBILITY.md](references/ACCESSIBILITY.md): the audit workflow (Lighthouse, axe, accessibility-tree snapshot), POUR, text alternatives, media, keyboard, focus not obscured, target size, dragging, timing, motion, language, consistent help, forms and errors, redundant entry, accessible authentication, ARIA, live regions, and issues by impact.
+- [references/A11Y-PATTERNS.md](references/A11Y-PATTERNS.md): copy-ready markup for modal focus traps, skip links, form labels, error announcement, ARIA tabs, live regions, and screen-reader commands.
+- [references/WCAG.md](references/WCAG.md): every WCAG 2.2 success criterion by level, for checking conformance claims.
+
+Never claim WCAG conformance from a Lighthouse score alone: automated tools catch a subset of barriers (R-36).
+
 ## Human Skill Checklist
 
 Run these alongside the core Delivery Gate when the task involves UI. All answers must be **yes**:
@@ -145,3 +232,5 @@ Run these alongside the core Delivery Gate when the task involves UI. All answer
 - [ ] Is every interactive element reachable and operable by keyboard, with dialogs closable via Escape and no `outline: none` without a replacement? (R-32, R-26)
 - [ ] Are the empty, loading, and error states of every data view present and perceivable, not color-only? (R-27, C-4)
 - [ ] Can text be resized to 200% without being clipped, and does the mobile keyboard never cover a focused input? (R-35)
+- [ ] Does every enabled interactive element show `cursor: pointer` (disabled ones `not-allowed`), use a native `<button>` or `<a href>`, carry an accessible name, and show distinct hover, active, focus-visible, and disabled states? (R-39)
+- [ ] Are `lang`, `<title>`, landmarks, heading order, a skip link, visible form labels, `alt` text, and `prefers-reduced-motion` handling in place? (R-39)

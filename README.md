@@ -152,7 +152,7 @@ curl -o antislop.md https://raw.githubusercontent.com/miqdadbadjuber/anti-slop/m
 
 ## What it does
 
-- **38 mandatory rules** (R-01 to R-38) in three tiers: Hard Gate, Purpose-Gate, and Quality Locks.
+- **41 mandatory rules** (R-01 to R-41) in three tiers: Hard Gate, Purpose-Gate, and Quality Locks.
 - **A Liveliness Toolkit**: three dials (ENERGY / RHYTHM / MOTION) and a Design Read, so the result comes out alive rather than merely clean.
 - **A Delivery Gate**: a mandatory PASS/FAIL report in four blocks, run before anything ships.
 - **Six skills**, one per concern, so an agent loads only what a task needs.
@@ -212,7 +212,12 @@ A folder that goes deeper into one concern, holding a `SKILL.md` with its rules.
 
 ## Roadmap
 
-**v3.2.23** fixes the version the installer reports for a plugin copy. A Kimi Code, Cline, or Oh My Pi store that kept an old copy beside the new one could report the old version, and Codex ranked 3.2.9 above 3.2.22. `npx antislop-ai --update` run from the home folder also stops writing a pointer into `~/CLAUDE.md`, `~/AGENTS.md`, and `~/GEMINI.md`.
+**v3.2.24** adds three Hard Gate rules, so a page that passes the gate is also a page people can use. It builds on the v3.2.21 contrast fix:
+
+- **R-39 Accessible Semantics & Interaction Affordances.** A pointer cursor on every enabled control, real buttons and links, accessible names, visible states, labels, `lang` and landmarks, and reduced motion. The depth lives in `antislop-human`.
+- **R-40 Performance & Core Web Vitals Budget.** LCP 2.5s, INP 200ms, and CLS 0.1 at p75, with sized media and a hero image that is never lazy loaded. The depth lives in `antislop-ui`.
+- **R-41 Web Best Practices & Security Baseline.** A doctype, charset, and viewport, no console errors, no mixed content, and no secrets in client code. The depth lives in `antislop-ui`.
+- **References read on demand.** WCAG 2.2, performance, and best-practices material in each skill's `references/` folder, adapted from the MIT-licensed web-quality-skills, so `SKILL.md` stays short.
 
 Every earlier release, and what comes next, is in [ROADMAP.md](ROADMAP.md).
 
@@ -226,7 +231,7 @@ Thanks to everyone who helps make antislop better.
 
 <p align="center">
   <a href="https://github.com/miqdadbadjuber/anti-slop/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=miqdadbadjuber/anti-slop&v=3.2.23" alt="antislop contributors" />
+    <img src="https://contrib.rocks/image?repo=miqdadbadjuber/anti-slop&v=3.2.24" alt="antislop contributors" />
   </a>
 </p>
 

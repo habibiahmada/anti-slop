@@ -1,8 +1,26 @@
 # Accessibility Code Patterns
 
+> Reference for antislop. Adapted from the MIT-licensed web-quality-skills by Addy Osmani (https://github.com/addyosmani/web-quality-skills); see LICENSE-web-quality-skills in the skill folder.
+
 Practical, copy-paste-ready patterns for common accessibility requirements. Each pattern is self-contained and linked from the main [SKILL.md](../SKILL.md).
 
 ---
+
+## Pointer cursor base layer
+
+Set once, in the base CSS layer, so no component has to remember it (R-39). A CSS reset such as Tailwind preflight sets `button` to `cursor: default`, so this layer comes after the reset.
+
+```css
+a[href], button, summary, select, label[for],
+[role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="option"], [role="switch"],
+input[type="checkbox"], input[type="radio"], input[type="file"],
+input[type="submit"], input[type="button"], input[type="reset"], input[type="range"], input[type="color"] {
+  cursor: pointer;
+}
+:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+```
+
+Text inputs keep `cursor: text`, and drag handles use `grab` / `grabbing`.
 
 ## Modal focus trap
 
@@ -216,18 +234,3 @@ function showNotification(message, type = 'polite') {
 ```
 
 Clear the container before writing to ensure the same message triggers a new announcement.
-
----
-
-## Screen reader commands
-
-Quick reference for the most common screen reader shortcuts.
-
-| Action | VoiceOver (Mac) | NVDA (Windows) |
-|--------|-----------------|----------------|
-| Start/Stop | ⌘ + F5 | Ctrl + Alt + N |
-| Next item | VO + → | ↓ |
-| Previous item | VO + ← | ↑ |
-| Activate | VO + Space | Enter |
-| Headings list | VO + U, then arrows | H / Shift + H |
-| Links list | VO + U | K / Shift + K |

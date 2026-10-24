@@ -152,7 +152,7 @@ curl -o antislop.md https://raw.githubusercontent.com/miqdadbadjuber/anti-slop/m
 
 ## What it does
 
-- **41 mandatory rules** (R-01 to R-41) in three tiers: Hard Gate, Purpose-Gate, and Quality Locks.
+- **40 mandatory rules** (R-01 to R-40) in three tiers: Hard Gate, Purpose-Gate, and Quality Locks.
 - **A Liveliness Toolkit**: three dials (ENERGY / RHYTHM / MOTION) and a Design Read, so the result comes out alive rather than merely clean.
 - **A Delivery Gate**: a mandatory PASS/FAIL report in four blocks, run before anything ships.
 - **Six skills**, one per concern, so an agent loads only what a task needs.
@@ -212,12 +212,11 @@ A folder that goes deeper into one concern, holding a `SKILL.md` with its rules.
 
 ## Roadmap
 
-**v3.2.24** adds three Hard Gate rules, so a page that passes the gate is also a page people can use. It builds on the v3.2.21 contrast fix:
+**v3.2.24** adds two Hard Gate rules, so a control that passes the gate is also one people can use:
 
-- **R-39 Accessible Semantics & Interaction Affordances.** A pointer cursor on every enabled control, real buttons and links, accessible names, visible states, labels, `lang` and landmarks, and reduced motion. The depth lives in `antislop-human`.
-- **R-40 Performance & Core Web Vitals Budget.** LCP 2.5s, INP 200ms, and CLS 0.1 at p75, with sized media and a hero image that is never lazy loaded. The depth lives in `antislop-ui`.
-- **R-41 Web Best Practices & Security Baseline.** A doctype, charset, and viewport, no console errors, no mixed content, and no secrets in client code. The depth lives in `antislop-ui`.
-- **References read on demand.** WCAG 2.2, performance, and best-practices material in each skill's `references/` folder, adapted from the MIT-licensed web-quality-skills, so `SKILL.md` stays short.
+- **R-39 Accessible Semantics & Interaction Affordances.** A pointer cursor on every enabled control, real buttons and links, accessible names, visible states, labels, and reduced motion, plus `lang`, `<title>`, and landmarks when the task produces a whole page. The depth lives in `antislop-human`.
+- **R-40 Performance Mechanisms.** Sized media, a hero image that is never lazy loaded, no render-blocking third-party script, and no performance number reported unless it was measured. The depth lives in `antislop-ui`.
+- **References read on demand.** WCAG 2.2, accessibility patterns, and Core Web Vitals in each skill's `references/` folder, adapted from the MIT-licensed web-quality-skills, plus an optional web baseline checklist.
 
 Every earlier release, and what comes next, is in [ROADMAP.md](ROADMAP.md).
 

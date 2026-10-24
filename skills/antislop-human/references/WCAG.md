@@ -1,5 +1,7 @@
 # WCAG 2.2 Quick Reference
 
+> Reference for antislop. Adapted from the MIT-licensed web-quality-skills by Addy Osmani (https://github.com/addyosmani/web-quality-skills); see LICENSE-web-quality-skills in the skill folder.
+
 ## Success criteria by level
 
 ### Level A (minimum)
@@ -95,69 +97,6 @@
 | **3.3.6** Error Prevention (All) | All form submissions can be reviewed |
 | **3.3.9** Accessible Authentication (Enhanced) | No cognitive function test for login (no object or personal content recognition exceptions) |
 
-## Common ARIA patterns
-
-### Buttons
-```html
-<button>Label</button>
-<!-- or -->
-<button aria-label="Close dialog">×</button>
-```
-
-### Links
-```html
-<a href="/page">Descriptive link text</a>
-<!-- External links -->
-<a href="https://external.com" target="_blank" rel="noopener">
-  External site
-  <span class="visually-hidden">(opens in new tab)</span>
-</a>
-```
-
-### Form fields
-```html
-<label for="email">Email address</label>
-<input type="email" id="email" aria-describedby="email-hint">
-<p id="email-hint">We'll never share your email.</p>
-```
-
-### Error states
-```html
-<label for="email">Email</label>
-<input type="email" id="email" aria-invalid="true" aria-describedby="email-error">
-<p id="email-error" role="alert">Please enter a valid email address.</p>
-```
-
-### Navigation
-```html
-<nav aria-label="Main">
-  <ul>
-    <li><a href="/" aria-current="page">Home</a></li>
-    <li><a href="/about">About</a></li>
-  </ul>
-</nav>
-```
-
-### Modals
-```html
-<div role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-  <h2 id="dialog-title">Confirm Action</h2>
-  <!-- content -->
-</div>
-```
-
-### Live regions
-```html
-<!-- Polite (waits for pause in speech) -->
-<div aria-live="polite">Status update here</div>
-
-<!-- Assertive (interrupts immediately) -->
-<div aria-live="assertive" role="alert">Error message here</div>
-
-<!-- Status (polite, implicit) -->
-<div role="status">Loading complete</div>
-```
-
 ## What changed from 2.1 to 2.2
 
 | Change | Criterion | Level |
@@ -172,17 +111,6 @@
 | **Added** | 3.3.7 Redundant Entry | A |
 | **Added** | 3.3.8 Accessible Authentication (Minimum) | AA |
 | **Added** | 3.3.9 Accessible Authentication (Enhanced) | AAA |
-
-## Testing tools
-
-| Tool | Type | URL |
-|------|------|-----|
-| axe DevTools | Browser extension | [deque.com/axe](https://www.deque.com/axe/) |
-| WAVE | Browser extension | [wave.webaim.org](https://wave.webaim.org/) |
-| Lighthouse | Built into Chrome | DevTools → Lighthouse |
-| NVDA | Screen reader (Windows) | [nvaccess.org](https://www.nvaccess.org/) |
-| VoiceOver | Screen reader (Mac) | Built into macOS |
-| Colour Contrast Analyser | Desktop app | [tpgi.com](https://www.tpgi.com/color-contrast-checker/) |
 
 ## Sources
 

@@ -21,9 +21,9 @@ If no antislop pointer exists and this file is being read for the first time, ru
 1. **Declare the setup before doing anything.** Tell the user you will (a) get the chosen skill(s) in place in `skills/<name>/` subfolders next to this file (the user fetches them; the agent never downloads from the network, see step 4), and (b) append an antislop pointer block at the end of the project's entry file. Get approval. Never modify the entry file silently.
 2. **Ask which skills to install** (multi-select, in the user's chat language). List only the skills that exist in this version of antislop:
    - **1. All** (recommended): install every available skill. Choose this when the work spans UI, copy, people, or mobile layout.
-   - **2. `antislop-ui`** (UI / visual): pick this for building or editing a website, web app, or interface: color, layout, components, decoration, motion, plus native performance, Core Web Vitals, and web best practices (R-40, R-41).
+   - **2. `antislop-ui`** (UI / visual): pick this for building or editing a website, web app, or interface: color, layout, components, decoration, motion.
    - **3. `antislop-copywriting`** (copy & text): pick this for writing or editing copy: headlines, CTAs, value propositions, tone, landing-page text, product prose.
-   - **4. `antislop-human`** (people): pick this for making sure a UI works for people with different eyes, hands, and setups: contrast, keyboard, focus, states, plus native WCAG 2.2 depth: pointer cursor and interaction affordances, semantics, forms, ARIA, reduced motion (R-39).
+   - **4. `antislop-human`** (people): pick this for making sure a UI works for people with different eyes, hands, and setups: contrast, keyboard, focus, states.
    - **5. `antislop-layoutmobile`** (mobile / responsive): pick this for layouts that have to reflow across screen sizes, phone to desktop: breakpoints, scale, grids, overflow, tap targets.
    - **6. `antislop-code`** (code comments): pick this for writing or editing code comments: remove generic AI-slop comments, keep the valuable ones, never touch the code.
    - New skills appear here as they ship; never offer a skill that does not exist in this version.
@@ -173,7 +173,7 @@ Anything presented as fact (testimonials, statistics, security claims) is real a
 
 ## Part 1: AI Slop Patterns (Warning Signs)
 
-These are the most common patterns found in AI-generated designs. Use this table to **audit** your output: scan for clusters, then ask each one "what does this serve?" A single pattern from this list is fine if it serves a purpose, unless a **Hard Gate** rule in Part 2 forbids it (R-02, R-03, R-17, R-18, R-23 to R-28, R-32 to R-41). What makes a design slop is many of these appearing together with no reason. This is a **diagnostic scan, not a ban list**: Part 1 itself bans nothing, but the Hard Gate rules in Part 2 are absolute, and every other pattern must pass the purpose test (Part 2, Purpose-Gate group).
+These are the most common patterns found in AI-generated designs. Use this table to **audit** your output: scan for clusters, then ask each one "what does this serve?" A single pattern from this list is fine if it serves a purpose, unless a **Hard Gate** rule in Part 2 forbids it (R-02, R-03, R-17, R-18, R-23 to R-28, R-32 to R-40). What makes a design slop is many of these appearing together with no reason. This is a **diagnostic scan, not a ban list**: Part 1 itself bans nothing, but the Hard Gate rules in Part 2 are absolute, and every other pattern must pass the purpose test (Part 2, Purpose-Gate group).
 
 ### Visual & Color
 
@@ -265,9 +265,9 @@ These are the most common patterns found in AI-generated designs. Use this table
 
 ---
 
-## Part 2: Mandatory Rules (R-01 to R-41, grouped)
+## Part 2: Mandatory Rules (R-01 to R-40, grouped)
 
-All 41 rules still apply. They are grouped into three tiers so the mechanism is explicit: **Hard Gate** rules are absolute, **Purpose-Gate** rules allow the technique but require a written reason, **Quality Locks** are consistency requirements.
+All 40 rules still apply. They are grouped into three tiers so the mechanism is explicit: **Hard Gate** rules are absolute, **Purpose-Gate** rules allow the technique but require a written reason, **Quality Locks** are consistency requirements.
 
 ### Group 1: Hard Gate (absolute, no exceptions)
 
@@ -426,39 +426,27 @@ If an element genuinely cannot have a destination yet, remove it instead of ship
 
 #### R-39 — Accessible Semantics & Interaction Affordances
 
-Accessibility is a build requirement, not a polish pass. It is native to `antislop-human`: load it for every UI task.
+Every control the task builds or edits must say what it is and that it can be used. Keyboard operation and the focus indicator are R-32; touch target size is R-03.
 
 - **REQUIRED**: every enabled interactive element (`a[href]`, `button`, `summary`, `select`, `label[for]`, checkbox, radio, custom `role="button"`/`tab`/`switch`) shows `cursor: pointer`, set once in the base CSS layer; disabled controls show `cursor: not-allowed`
-- **REQUIRED**: actions are `<button>`, navigation is `<a href>` to a real destination; no clickable `div`/`span` without role, `tabindex`, and Enter/Space handling
+- **REQUIRED**: actions are `<button>`, navigation is `<a href>` to a real destination; no clickable `div`/`span`, and a custom control that cannot be native also meets R-32
 - **REQUIRED**: every control has an accessible name (icon-only buttons get `aria-label` or visually hidden text, the icon gets `aria-hidden="true"`); every image has `alt` (empty `alt=""` when decorative); every form field has a visible `<label>`
-- **REQUIRED**: distinct hover, active, `:focus-visible`, and disabled states, never color alone; targets at least 24x24 CSS px (44x44 for primary touch controls, see R-03)
-- **REQUIRED**: `<html lang>`, a unique `<title>`, landmarks (`header`, `nav`, `main`, `footer`), one `h1` and no skipped heading levels, a skip link on pages with a navigation
+- **REQUIRED**: distinct hover, active, and disabled states, never color alone
 - **REQUIRED**: non-essential motion stops under `prefers-reduced-motion: reduce`; anything moving longer than 5 seconds has a pause control
-- **FORBIDDEN**: `user-scalable=no` or `maximum-scale=1` in the viewport meta; ARIA that contradicts the native role; positive `tabindex`
+- **FORBIDDEN**: ARIA that contradicts the native role
+- **Only when the task produces a whole HTML document** (a page or an app shell, not a component):
+  - **REQUIRED**: `<html lang>`, a unique `<title>`, landmarks (`header`, `nav`, `main`, `footer`), one `h1` and no skipped heading levels
+  - **FORBIDDEN**: `user-scalable=no` or `maximum-scale=1` in the viewport meta
 - A UI that looks finished but cannot be perceived or operated by everyone is unfinished
 
-#### R-40 — Performance & Core Web Vitals Budget
+#### R-40 — Performance Mechanisms
 
-Performance and Core Web Vitals are native to `antislop-ui`: load it for every page or component you build or edit.
+The gate checks what the code shows. The Core Web Vitals thresholds (LCP, INP, CLS at p75) are field data from real users, which the agent writing the page does not have, so they live in `antislop-ui`'s `references/CORE-WEB-VITALS.md` for when real measurements exist.
 
-- **REQUIRED**: design to the "Good" thresholds at the 75th percentile: LCP 2.5s or less, INP 200ms or less, CLS 0.1 or less
 - **REQUIRED**: every `<img>`, `<video>`, and `<iframe>` has `width` and `height` (or `aspect-ratio`); space for late content (ads, embeds, banners) is reserved
-- **REQUIRED**: the LCP image is never `loading="lazy"`, is discoverable in the HTML, and gets `fetchpriority="high"`; images below the fold are lazy-loaded; modern formats (AVIF/WebP) with `srcset`/`sizes`
-- **REQUIRED**: fonts use `font-display: swap` (or `optional`), are subset and self-hosted where possible, with critical ones preloaded
-- **REQUIRED**: no render-blocking third-party script in `<head>`; non-critical scripts are `defer`/`async` or loaded on interaction; long tasks over 50ms in event handlers are split or yielded
-- **FORBIDDEN**: shipping an unoptimized hero image, a whole icon library for a few icons, or a framework-sized dependency for a trivial job, without a written reason
+- **REQUIRED**: the hero image is an `<img>` in the HTML, never `loading="lazy"`, with `fetchpriority="high"`
+- **REQUIRED**: no render-blocking third-party script in `<head>`; non-critical scripts are `defer`/`async` or loaded on interaction
 - **FORBIDDEN**: reporting a Lighthouse score or a Web Vitals number that was not measured (see R-36). If it was not measured, say "not measured"
-
-#### R-41 — Web Best Practices & Security Baseline
-
-Web best practices are native to `antislop-ui`: load it for every web page or app you build or edit.
-
-- **REQUIRED**: `<!doctype html>`, `<meta charset="utf-8">` first in `<head>`, and `<meta name="viewport" content="width=device-width, initial-scale=1">`
-- **REQUIRED**: HTTPS for every resource; no mixed content; external links opened in a new tab carry `rel="noopener noreferrer"`
-- **REQUIRED**: zero console errors and no deprecated APIs (`document.write`, synchronous XHR, `unload` listeners); scroll and touch listeners are `passive` where they do not call `preventDefault`
-- **REQUIRED**: valid, semantic HTML; no duplicate `id`; third-party scripts and styles from a CDN you do not control are pinned with Subresource Integrity
-- **FORBIDDEN**: secrets, API keys, or tokens in client code; `innerHTML`/`eval` with untrusted input; asking for permissions (location, notifications, camera) on page load instead of in response to a user action
-- A page that works on the author's machine but logs errors, leaks secrets, or breaks on another browser is not shippable
 
 ### Group 2: Purpose-Gate (technique allowed, purpose required)
 
@@ -703,9 +691,8 @@ Before declaring the design done, answer every question below. All answers must 
 - [ ] Are there any fabricated security, compliance, performance, or customer claims? *(R-36)*
 - [ ] Was the design built without direction and not labeled *"draft without direction"* with honest default dials ENERGY 1 / RHYTHM 1 / MOTION 1? *(R-37)*
 - [ ] Is there any realistically-styled content that was fabricated (testimonials, features, statistics, ghost links, fictional team) without a real source? *(R-38)*
-- [ ] Is any interactive element missing `cursor: pointer`, an accessible name, a native element or full keyboard role, or a distinct hover/active/focus/disabled state; or is `lang`, `<title>`, a landmark, a label, or `alt` missing; or does motion ignore `prefers-reduced-motion`? *(R-39)*
-- [ ] Does any page miss the Core Web Vitals budget (LCP 2.5s, INP 200ms, CLS 0.1), ship media without dimensions, lazy-load the LCP image, block render with third-party scripts, or report a metric that was not measured? *(R-40)*
-- [ ] Is there a missing doctype/charset/viewport, mixed content, a console error, a deprecated API, a secret in client code, an unpinned third-party CDN asset, or a permission requested on load? *(R-41)*
+- [ ] Does any control lack `cursor: pointer`, a native element, an accessible name, or hover/active/disabled states; any field a visible label or image its `alt`; does motion ignore `prefers-reduced-motion`; or does a whole document lack `lang`, `<title>`, or landmarks, or block zoom? *(R-39)*
+- [ ] Does any media element ship without dimensions, the hero image load lazily or without `fetchpriority="high"`, a third-party script block render in `<head>`, or a performance number get reported that was not measured? *(R-40)*
 
 ### Block 2: Purpose-Gate (technique allowed, reason required)
 

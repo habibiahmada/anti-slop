@@ -6,7 +6,7 @@ Targeted optimization for the three Core Web Vitals using field data to identify
 
 ## Measure before optimizing
 
-When a runnable URL is available, read [the performance measurement workflow](MEASUREMENT.md). Prefer this sequence:
+When a runnable URL is available, prefer this sequence:
 
 1. Check page-level CrUX p75 data, with a clearly labeled origin fallback when page data is unavailable.
 2. Record a browser performance trace under stated conditions. With Chrome DevTools MCP, trace summaries can include CrUX alongside the observed lab metrics.
@@ -24,6 +24,8 @@ If only source code is available, identify likely causes but do not claim that L
 | **CLS** | Visual Stability | ≤ 0.1 | 0.1 to 0.25 | > 0.25 |
 
 Google measures at the **75th percentile**: 75% of page visits must meet "Good" thresholds.
+
+These are the numbers R-40 keeps out of the Hard Gate. They describe real visits, so compare a page against them only with a real measurement in hand, and report "not measured" otherwise (R-36).
 
 ---
 
@@ -144,7 +146,7 @@ new PerformanceObserver((list) => {
 
 INP measures responsiveness across clicks, taps, and key presses during a visit. Diagnose its input delay, processing time, and presentation delay separately; a slow interaction may involve main-thread contention before the handler, expensive application work, or delayed rendering after it.
 
-When field INP is poor or a trace identifies a slow interaction, read [the INP reference](INP.md) for trace interpretation, yielding patterns, third-party and rendering causes, a single-session observer, and first-party attribution.
+When field INP is poor or a trace identifies a slow interaction, read [web.dev on optimizing INP](https://web.dev/articles/optimize-inp) for trace interpretation, yielding patterns, and third-party and rendering causes.
 
 ---
 
@@ -152,7 +154,7 @@ When field INP is poor or a trace identifies a slow interaction, read [the INP r
 
 CLS measures unexpected layout shifts across a page visit. Use field attribution or a trace to identify the shifted node and the trigger; do not assume the visible victim caused the shift.
 
-When field CLS is poor or a trace reports shifts, read [the CLS reference](CLS.md) for reserved-space patterns, dynamic content, font and animation fixes, a debugging observer, and a verification checklist.
+When field CLS is poor or a trace reports shifts, read [web.dev on optimizing CLS](https://web.dev/articles/optimize-cls) for reserved-space patterns, dynamic content, and font and animation fixes.
 
 ---
 
@@ -168,54 +170,12 @@ When field CLS is poor or a trace reports shifts, read [the CLS reference](CLS.m
 
 Do not route performance through Chrome DevTools MCP's `lighthouse_audit`; that capability intentionally covers non-performance Lighthouse categories. Do not compare a single lab value directly with a field p75 as if they were equivalent samples.
 
-When adding or reviewing production collection, read [the first-party RUM reference](RUM.md). Prefer the `web-vitals` library because raw browser APIs do not by themselves implement every Core Web Vital's lifecycle and reporting rules.
+When adding or reviewing production collection, read [the `web-vitals` library documentation](https://github.com/GoogleChrome/web-vitals). Prefer the `web-vitals` library because raw browser APIs do not by themselves implement every Core Web Vital's lifecycle and reporting rules.
 
 ---
 
-## Framework quick fixes
-
-### Next.js
-```jsx
-// LCP: Use next/image with priority
-import Image from 'next/image';
-<Image src="/hero.jpg" priority fill alt="Hero" />
-
-// INP: Use dynamic imports
-const HeavyComponent = dynamic(() => import('./Heavy'), { ssr: false });
-
-// CLS: Image component handles dimensions automatically
-```
-
-### React
-```jsx
-// LCP: Preload in head
-<link rel="preload" href="/hero.jpg" as="image" fetchpriority="high" />
-
-// INP: Memoize and useTransition
-const [isPending, startTransition] = useTransition();
-startTransition(() => setExpensiveState(newValue));
-
-// CLS: Always specify dimensions in img tags
-```
-
-### Vue/Nuxt
-```vue
-<!-- LCP: Use nuxt/image with preload -->
-<NuxtImg src="/hero.jpg" preload loading="eager" />
-
-<!-- INP: Use async components -->
-<component :is="() => import('./Heavy.vue')" />
-
-<!-- CLS: Use aspect-ratio CSS -->
-<img :style="{ aspectRatio: '16/9' }" />
-```
-
 ## References
 
-- [Detailed LCP optimization](LCP.md), read when an LCP trace points to discovery, loading, or render delay
-- [Detailed INP optimization](INP.md), read when a trace or field attribution identifies a slow interaction
-- [Detailed CLS optimization](CLS.md), read when a trace or field attribution identifies unexpected shifts
-- [web.dev LCP](https://web.dev/articles/lcp)
+- [web.dev LCP](https://web.dev/articles/lcp) and [optimizing LCP](https://web.dev/articles/optimize-lcp)
 - [web.dev INP](https://web.dev/articles/inp)
 - [web.dev CLS](https://web.dev/articles/cls)
-- [Performance skill](PERFORMANCE.md)

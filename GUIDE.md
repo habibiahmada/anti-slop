@@ -45,7 +45,7 @@ This guide goes from zero to installed. Every route below carries its own update
 
 A rulebook the assistant reads every session, plus optional skills that go deeper into one kind of work.
 
-- **41 rules in three tiers.** Hard Gate rules are absolute. The other two ask whether a choice has a purpose, and reject technique that has none.
+- **40 rules in three tiers.** Hard Gate rules are absolute. The other two ask whether a choice has a purpose, and reject technique that has none.
 - **A Delivery Gate.** Before anything ships, the assistant runs a mandatory PASS/FAIL report you can check.
 - **A Liveliness Toolkit.** Three dials and a Design Read, so the result comes out alive rather than merely clean.
 - **Six skills.** One core that always loads, plus five that load only when a task needs them.
@@ -559,11 +559,11 @@ The core is always loaded. The five skills load only when your task needs them. 
 <!-- antislop:skills:start -->
 ### antislop
 
-The core, and it is always loaded. All 41 rules and the Delivery Gate live here, so every task gets them whether or not you pick anything else. The five skills below add depth to it.
+The core, and it is always loaded. All 40 rules and the Delivery Gate live here, so every task gets them whether or not you pick anything else. The five skills below add depth to it.
 
 ### antislop-ui
 
-Load it when the AI builds or restyles anything you can see: color, layout, cards, buttons, motion. Performance, Core Web Vitals, and web best practices are built in.
+Load it when the AI builds or restyles anything you can see: color, layout, cards, buttons, motion. Sized media and load priority are built in.
 
 | What it covers | The patterns it names |
 |----------------|-----------------------|
@@ -573,7 +573,7 @@ Load it when the AI builds or restyles anything you can see: color, layout, card
 | Structural & Flow | Dead Navigation, Non-Functional Controls, Sections That Fill a Template |
 | App & Dashboard | Default Dashboard Shell, Stat Cards With Invented Numbers, Filler Activity Feed, Charts Without a Question, Generic Table Columns, Filler Data in Fields and Columns, Placeholder Empty and Loading States |
 | Motion | Endless Pulses and Loops, Template Animations Stacked |
-| Performance & Web Quality | Unsized Media That Shifts the Layout, Hero Image Loaded Like Any Other Image, Main Thread Blocked on Interaction, Render-Blocking and Oversized Delivery, Missing Document Basics and Console Errors, Insecure Defaults |
+| Performance | Unsized Media That Shifts the Layout, Hero Image Loaded Like Any Other Image, Render-Blocking Third-Party Script |
 
 ### antislop-copywriting
 
@@ -588,7 +588,7 @@ Load it when the AI writes or edits text: headlines, buttons, emails, or a page 
 
 ### antislop-human
 
-Load it when real people have to use the result. Readable colors, keyboard use, visible focus, button states, pointer cursor and the other interaction affordances, full WCAG 2.2 references, and the contrast checker.
+Load it when real people have to use the result. Readable colors, keyboard use, visible focus, button states, the pointer cursor and other interaction affordances, WCAG 2.2 references, and the contrast checker.
 
 | What it covers | The patterns it names |
 |----------------|-----------------------|
@@ -596,7 +596,7 @@ Load it when real people have to use the result. Readable colors, keyboard use, 
 | Keyboard | Removed Focus Outline, Mouse-Only Patterns, Broken Tab Order |
 | Focus & States | Weak or Invisible Focus Indicator, Color-Only Feedback, Missing UI States |
 | Zoom & Mobile Use | Text That Cannot Zoom, Mobile Keyboard Covers the Form |
-| Interaction Affordances (antislop strict layer) | Clickable Without a Pointer Cursor, Div or Span Pretending to Be a Control, Icon-Only Control With No Name, No Hover, Active, or Disabled State, Hit Area Smaller Than the Target, Motion That Ignores the User Setting, Missing Page-Level Semantics, Form Field Without a Real Label |
+| Interaction Affordances | Clickable Without a Pointer Cursor, Div or Span Pretending to Be a Control, Icon-Only Control With No Name, No Hover, Active, or Disabled State, Motion That Ignores the User Setting, Form Field Without a Real Label, Missing Page-Level Semantics (whole documents only) |
 
 ### antislop-layoutmobile
 

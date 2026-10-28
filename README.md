@@ -8,7 +8,7 @@
 <a href="https://trendshift.io/repositories/137042?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-137042" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/137042/weekly?language=JavaScript" alt="Trendshift Weekly Trending" width="250" height="55"/></a>
 
 [![npm version](https://img.shields.io/npm/v/antislop-ai?style=flat-square&color=cb3837&label=npm)](https://www.npmjs.com/package/antislop-ai)
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=flat-square&logo=nodedotjs&logoColor=white)](cli/package.json)
+[![Node.js](https://img.shields.io/badge/Node.js-20.12%2B-339933?style=flat-square&logo=nodedotjs&logoColor=white)](cli/package.json)
 [![skills.sh](https://skills.sh/b/miqdadbadjuber/anti-slop?style=flat-square)](https://skills.sh/miqdadbadjuber/anti-slop)
 [![MIT license](https://img.shields.io/badge/license-MIT-f4c430?style=flat-square)](LICENSE)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/VWKggJfHFR)
